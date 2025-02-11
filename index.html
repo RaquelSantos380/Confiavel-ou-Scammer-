@@ -249,38 +249,86 @@
             "@pfrct_vendakiara"
         ];
 
-        function buscarPessoa() {
-            const input = document.getElementById('pesquisa');
-            const filtro = input.value.toLowerCase();
-            const lista = document.getElementById('listaPessoas');
-            lista.innerHTML = '';
+function buscarPessoa() {
+    const input = document.getElementById('pesquisa');
+    const filtro = input.value.toLowerCase();
+    const lista = document.getElementById('listaPessoas');
+    lista.innerHTML = '';
 
-            scammers.forEach(scammer => {
-                if (scammer.toLowerCase().includes(filtro)) {
-                    const item = document.createElement('li');
-                    const icon = document.createElement('img');
-                    item.appendChild(icon);
-                    item.appendChild(document.createTextNode(scammer));
-                    item.classList.add('scammer');
-                    lista.appendChild(item);
-                }
-            });
+    // Lista de scammers
+    const scammers = [
+        "@panditastore._",
+        "@M4h_storee",
+        // ... outros scammers
+    ];
 
-            // Adicionar pessoas confiáveis aqui (exemplo)
-            const confiaveis = ["@Tia-Hermione", "@juliostoreadoptme"];
-            confiaveis.forEach(confiavel => {
-                if (confiavel.toLowerCase().includes(filtro)) {
-                    const item = document.createElement('li');
-                    const icon = document.createElement('img');
-                    icon.src = 'conf.jpg'; // Ícone para confiáveis
-                    item.appendChild(icon);
-                    item.appendChild(document.createTextNode(confiavel));
-                    item.classList.add('confiavel');
-                    lista.appendChild(item);
-                }
-            });
+    // Lista de pessoas confiáveis
+    const confiaveis = [
+        "@Tia-Hermione",
+        "@juliostoreadoptme",
+        "@lojinhadarakyoficial",
+        "@vendasgabb",
+        // Adicione mais confiáveis aqui
+    ];
+
+    // Adiciona scammers à lista
+    scammers.forEach(scammer => {
+        if (scammer.toLowerCase().includes(filtro)) {
+            const item = document.createElement('li');
+            const icon = document.createElement('img');
+            icon.src = 'scammer-icon.png'; // Adicione um ícone para scammers
+            item.appendChild(icon);
+            item.appendChild(document.createTextNode(scammer));
+            item.classList.add('scammer');
+            lista.appendChild(item);
         }
+    });
 
+    // Adiciona confiáveis à lista
+    confiaveis.forEach(confiavel => {
+        if (confiavel.toLowerCase().includes(filtro)) {
+            const item = document.createElement('li');
+            const icon = document.createElement('img');
+            icon.src = 'conf.jpg'; // Ícone para confiáveis
+            item.appendChild(icon);
+            item.appendChild(document.createTextNode(confiavel));
+            item.classList.add('confiavel');
+            lista.appendChild(item);
+        }
+    });
+}
+
+function buscarPessoa() {
+    const input = document.getElementById('pesquisa');
+    const filtro = input.value.toLowerCase();
+    const lista = document.getElementById('listaPessoas');
+    lista.innerHTML = '';
+
+    scammers.forEach(scammer => {
+        if (scammer.toLowerCase().includes(filtro)) {
+            const item = document.createElement('li');
+            const icon = document.createElement('img');
+            item.appendChild(icon);
+            item.appendChild(document.createTextNode(scammer));
+            item.classList.add('scammer');
+            lista.appendChild(item);
+        }
+    });
+
+    // Adicionar pessoas confiáveis aqui
+    const confiaveis = ["@Tia-Hermione", "@juliostoreadoptme", "@lojinhadarakyoficial", "@yuristoreoficial", "@vendasgabb", "@vendasgablives", "@starstoreofcial", "@beear.store", "@tia_lany_adoptmee", "@joony888_", "@crizz.adoptmee", "@tiavan_adoptme", "@spaidizin", "@lekaterenzinoficial", "@ruivaaguiar_"];
+    confiaveis.forEach(confiavel => {
+        if (confiavel.toLowerCase().includes(filtro)) {
+            const item = document.createElement('li');
+            const icon = document.createElement('img');
+            icon.src = 'conf.jpg'; // Ícone para confiáveis
+            item.appendChild(icon);
+            item.appendChild(document.createTextNode(confiavel));
+            item.classList.add('confiavel');
+            lista.appendChild(item);
+        }
+    });
+}
         function mostrarFormulario() {
             const formContainer = document.getElementById('formContainer');
             formContainer.style.display = formContainer.style.display === 'none' || formContainer.style.display === '' ? 'block' : 'none';
