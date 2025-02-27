@@ -157,13 +157,41 @@
             color: white;
         }
 
-        .btn-scammer {
-            background-color: #ee416e;
-        }
+.btn-classify {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0 5px;
+    color: white;
+}
 
-        .btn-trustworthy {
-            background-color: #76993D;
-        }
+.btn-scammer {
+    background-color: #ee416e;
+    padding: 5px 10px;
+    font-size: 12px;
+    width: auto;
+}
+
+.btn-trustworthy {
+    background-color: #76993D;
+    padding: 5px 10px;
+    font-size: 12px;
+    width: auto;
+}
+
+.btn-classify:hover {
+    opacity: 0.8; /* Diminui a opacidade para um efeito sutil */
+}
+
+.btn-scammer:hover {
+    background-color: #ff6f8e; /* Cor alterada para quando o mouse passa sobre "Scammer" */
+}
+
+.btn-trustworthy:hover {
+    background-color: #a8d08d; /* Cor alterada para quando o mouse passa sobre "Confiável" */
+}
 
         footer {
             margin-top: auto;
@@ -247,6 +275,7 @@
             <span class="close" onclick="fecharModal()">&times;</span>
             <h2 id="modalTitle"></h2>
             <p id="modalInfo"></p>
+            <div id="modalProofs"></div>
         </div>
     </div>
 
@@ -313,7 +342,7 @@
             { name: "@asumah_", nick: "O_ASUMA" },          
             { name: "@juliostoreadoptme", nick: "Clunk2zt" },
             { name: "@lojinhadarakyoficial", nick: "RaqueSantos380_2" },
-            { name: "@yuristoreoficial", nick: "yurienzovi" },
+            { name: "@yuristoreoficial", nick: "yurienzovi", proofs: ["prova 1.jpg", "prova 2.jpg"], proofCount: "600+" },
             { name: "@vendasgabb" },
             { name: "@vendasgablives" },
             { name: "@starstoreofcial" },
@@ -384,6 +413,23 @@
         function abrirModal(pessoa) {
             document.getElementById('modalTitle').textContent = pessoa.name;
             document.getElementById('modalInfo').textContent = `Nick: ${pessoa.nick || 'N/A'}`;
+            const modalProofs = document.getElementById('modalProofs');
+            modalProofs.innerHTML = '';
+
+            if (pessoa.proofs) {
+                const proofTitle = document.createElement('p');
+                proofTitle.textContent = `Quantidade de proofs: ${pessoa.proofCount || 'N/A'}`;
+                modalProofs.appendChild(proofTitle);
+
+                pessoa.proofs.forEach(proof => {
+                    const proofImage = document.createElement('img');
+                    proofImage.src = proof;
+                    proofImage.style.width = '100%';
+                    proofImage.style.marginTop = '10px';
+                    modalProofs.appendChild(proofImage);
+                });
+            }
+
             document.getElementById('myModal').style.display = "block";
         }
 
