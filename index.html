@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pesquisa de Scammers e Confiáveis</title>
-    <link rel="icon" type="image/x-icon" href="alerta.jpg"> <!-- Alterado para alerta.jpg -->
+    <link rel="icon" type="image/x-icon" href="alerta.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
+        /* Estilos existentes */
+
         body {
             font-family: 'Poppins', sans-serif;
-            background-image: url('alerta.jpg'); /* Adiciona a imagem de fundo */
-            background-size: cover; /* Faz a imagem cobrir todo o fundo */
-            background-position: center; /* Centraliza a imagem de fundo */
+            background-image: url('alerta.jpg');
+            background-size: cover;
+            background-position: center;
             margin: 0;
             padding: 0;
             color: #333;
@@ -26,6 +28,29 @@
             text-align: center;
             margin: 20px 0;
         }
+.modal {
+    display: none; /* Escondido por padrão */
+    position: fixed; /* Fica fixo na tela */
+    z-index: 1; /* Fica acima dos outros elementos */
+    left: 0;
+    top: 0;
+    width: 100%; /* Largura total da tela */
+    height: 100%; /* Altura total da tela */
+    overflow: auto; /* Adiciona rolagem se necessário */
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro com transparência */
+}
+
+.modal-content {
+    background-color: #fff; /* Fundo branco para o conteúdo do modal */
+    margin: 15% auto; /* Margem para centralizar o modal */
+    padding: 20px; /* Espaçamento interno */
+    border: 1px solid #888; /* Borda do modal */
+    width: 80%; /* Largura do modal */
+    max-width: 600px; /* Largura máxima */
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Sombra para destacar */
+}
+
 
         header img {
             height: 60px;
@@ -35,40 +60,31 @@
 
         h1 {
             font-family: 'Playfair Display', serif;
-            color: #00ff00;  /* Cor verde neon */
-            font-size: 28px; /* Aumenta o tamanho da fonte */
+            color: #00ff00;
+            font-size: 24px;
             margin: 10px 0;
-            text-shadow: 0 0 10px rgba(0, 255, 0, 0.7); /* Efeito de brilho */
-            display: flex;
-            align-items: center; /* Centraliza verticalmente */
-            justify-content: center; /* Centraliza horizontalmente */
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
         }
 
         .search-container {
-            position: relative;
             width: 90%;
-            max-width: 400px;
+            max-width: 350px;
             margin-bottom: 20px;
         }
 
-        input[type="text"] {
+        input[type="text"], input[type="email"] {
             width: 90%;
-            padding: 12px 10px; /* Ajuste o padding para incluir espaço para a lupa */
-            border: 2px solid #00ff00; /* Cor verde neon */
-            border-radius: 30px;
-            font-size: 16px;
-            background-color: rgba(255, 255, 255 / 70%); /* Fundo semitransparente */
+            padding: 8px 10px;
+            border: 2px solid #00ff00;
+            border-radius: 20px;
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.7);
             color: #444;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             transition: border-color 0.3s;
-            background-image: url('lupa.jpg'); /* Adiciona a imagem da lupa */
-            background-repeat: no-repeat; /* Não repete a imagem */
-            background-position: 10px center; /* Posiciona a imagem à esquerda */
-            background-size: 20px; /* Tamanho da imagem */
         }
 
-        input[type="text"]:focus {
-            border-color: #00cc00; /* Tom mais escuro do verde */
+        input[type="text"]:focus, input[type="email"]:focus {
+            border-color: #00cc00;
             outline: none;
         }
 
@@ -76,83 +92,88 @@
             list-style-type: none;
             padding: 0;
             width: 90%;
-            max-width: 500px;
+            max-width: 400px;
             margin: 0 auto;
         }
 
         li {
-            padding: 10px;
-            margin: 8px 0;
+            padding: 8px;
+            margin: 5px 0;
             background-color: #ffffff;
             border: 1px solid #e1bee7;
-            border-radius: 10px;
+            border-radius: 8px;
             text-align: center;
-            transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            font-size: 18px;
-            display: flex; /* Usar flexbox para alinhar o ícone e o texto */
-            align-items: center; /* Centraliza verticalmente */
-            justify-content: center; /* Centraliza horizontalmente */
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         li img {
-            height: 30px; /* Tamanho do ícone aumentado */
-            margin-right: 10px; /* Espaço entre o ícone e o texto */
-            border-radius: 50%; /* Torna o ícone redondo */
-        }
-
-        li:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .scammer {
-            color: red;
-            font-weight: bold;
-        }
-
-        .confiavel {
-            color: green;
-            font-weight: bold;
+            height: 25px;
+            margin-right: 5px;
+            border-radius: 50%;
         }
 
         .btn-adicionar {
-            padding: 10px 15px;
-            margin-top: 20px;
-            background-color: #00ff00; /* Cor verde neon */
-            color: black; /* Texto preto */
+            padding: 8px 12px;
+            margin-top: 10px;
+            background-color: #00ff00;
+            color: black;
             border: none;
-            border-radius: 25px;
+            border-radius: 20px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
             transition: background-color 0.3s;
         }
 
         .btn-adicionar:hover {
-            background-color: #00cc00; /* Tom mais escuro do verde */
+            background-color: #00cc00;
         }
 
         .form-container {
             display: none;
             background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
             width: 90%;
-            max-width: 650px;
+            max-width: 400px;
+        }
+
+        .classification-buttons {
+            margin: 10px 0;
+        }
+
+        .btn-classify {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 0 5px;
+            color: white;
+        }
+
+        .btn-scammer {
+            background-color: red;
+        }
+
+        .btn-trustworthy {
+            background-color: green;
         }
 
         footer {
             margin-top: auto;
-            padding: 15px;
+            padding: 10px;
             text-align: center;
             background-color: #ffffff;
             border-top: 2px solid #e91e63;
             border-radius: 5px;
             width: 90%;
-            max-width: 500px;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
         }
 
         footer a {
@@ -163,12 +184,20 @@
         footer a:hover {
             text-decoration: underline;
         }
+
+        .scammer {
+            color: red;
+        }
+
+        .confiavel {
+            color: green;
+        }
     </style>
 </head>
 <body>
     <header>
         <img src="hacker.jpg" alt="Logo da Raky">
-        <h1>Pesquisa de Scammers e Confiáveis <img src="" style="height: 25px;"></h1> <!-- Ícone em formato de bolinha -->
+        <h1>Pesquisa de Scammers e Confiáveis</h1>
     </header>
 
     <div class="search-container">
@@ -179,194 +208,239 @@
         <!-- Aqui aparecerão os resultados da pesquisa -->
     </ul>
 
-    <button class="btn-adicionar" onclick="mostrarFormulario()">Adicionar Nome</button>
+    <button class="btn-adicionar" onclick="mostrarFormulario('nome')">Adicionar Nome</button>
+    <button class="btn-adicionar" onclick="mostrarFormulario('nick')">Faltou algum Nick?</button>
 
-    <div class="form-container" id="formContainer">
-        <h3>Adicionar Nome</h3>
-        <form id="petForm" onsubmit="sendEmail(event)">
-            <label for="nick">Nome do Scammer:</label>
-            <input type="text" id="nick" required>
-            <br>
+    <div class="form-container" id="formContainerNome">
+        <h3>Adicionar Nome na Lista</h3>
+        <form id="petForm" onsubmit="sendEmail(event, 'nome')">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" required placeholder="Digite o nome">
             <label for="email">Seu Email:</label>
-            <input type="email" id="email" required>
-            <br>
+            <input type="email" id="emailNome" required placeholder="Digite seu Email">
             <label for="petInfo">Envie as provas:</label>
-            <input type="file" id="petInfo" required>
-            <br>
+            <input type="file" id="petInfoNome" required>
+            <div class="classification-buttons">
+                <button type="button" class="btn-classify btn-scammer" onclick="classify('scammer')">Scammer</button>
+                <button type="button" class="btn-classify btn-trustworthy" onclick="classify('trustworthy')">Confiável</button>
+            </div>
             <button type="submit" class="btn-adicionar">Enviar</button>
         </form>
-        <div id="successMessage" style="display:none;">Scammer enviado com Sucesso! Colocaremos assim que conferirmos as provas!</div>
+        <div id="successMessageNome" style="display:none;">Scammer enviado com Sucesso!</div>
+    </div>
+
+    <div class="form-container" id="formContainerNick">
+        <h3>Escreva o Nick:</h3>
+        <form id="nickForm" onsubmit="sendEmail(event, 'nick')">
+            <label for="nick">Nick:</label>
+            <input type="text" id="nick" required placeholder="Digite o Nick">
+            <input type="text" id="nick" required placeholder="Digite o @">
+            <label for="email">Seu Email:</label>
+            <input type="email" id="emailNick" required placeholder="Digite seu Email"> 
+            <button type="submit" class="btn-adicionar">Enviar</button>
+        </form>
+        <div id="successMessageNick" style="display:none;">Nick enviado com Sucesso!</div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalInfo"></p>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
         emailjs.init("y2Y2FotVDMytchPMg");
-
         const scammers = [
-            "@panditastore._",
-            "@M4h_storee",
-            "@clawn.store_",
-            "@tys.luke",
-            "@bellaha0se",
-            "@el_shock444",
-            "@gui store",
-            "@adoptmevendo01",
-            "@raven.center",
-            "@0nalis_",
-            "@store.tradesray",
-            "@princess_store_adoptme",
-            "@cau_storex",
-            "@coinsmoranguinho",
-            "@mundodoadoptme_",
-            "@olaffstore",
-            "@lojinha.do.jackson",
-            "@ydash.store_",
-            "@mandyadpt",
-            "@.lalisadeby",
-            "@sasa.xkz",
-            "@moana_storeofc",
-            "@gigih.adoptme6",
-            "@vsp.Infinity",
-            "@noahstore12",
-            "@Lu.adote-me",
-            "@guitrades12",
-            "@distiny_store",
-            "@Branquinho_de_vcs",
-            "@anaclara.storess",
-            "@_emanuele_store",
-            "@v3nda.de.pets.clu",
-            "@biel_kzh",
-            "@Lojinha.damagali45",
-            "@m4h_storee",
-            "@mari.storeofc",
-            "@nayeonautica._",
-            "@daily_.dojuao",
-            "@XxLord_reservaxX",
-            "@japazxy00",
-            "@lizx.store",
-            "@store_kittyy",
-            "@_biastore",
-            "@adoptmebrasil444",
-            "@fehstoreofcc",
-            "@store.adoptme8",
-            "@helenafofa_legal",
-            "@makzin.karmas",
-            "@pfrct_vendakiara",
-            "@lojinhadark0",
-            "@sh4rk.store",
+            { name: "@panditastore._" },
+            { name: "@M4h_storee" },
+            { name: "@clawn.store_" },
+            { name: "@tys.luke" },
+            { name: "@bellaha0se" },
+            { name: "@gui store" },
+            { name: "@adoptmevendo01" },
+            { name: "@raven.center" },
+            { name: "@0nalis_" },
+            { name: "@store.tradesray" },
+            { name: "@princess_store_adoptme" },
+            { name: "@cau_storex" },
+            { name: "@coinsmoranguinho" },
+            { name: "@mundodoadoptme_" },
+            { name: "@olaffstore" },     
+            { name: "@lojinha.do.jackson" },
+            { name: "@ydash.store_" },
+            { name: "@mandyadpt" },
+            { name: "@lalisadeby" },
+            { name: "@sasa.xkz" },
+            { name: "@moana_storeofc" },
+            { name: "@gigih.adoptme6" },
+            { name: "@vsp.Infinity" },
+            { name: "@noahstore12" },
+            { name: "@Lu.adote-me" },
+            { name: "@guitrades12" },
+            { name: "@distiny_store" },
+            { name: "@Branquinho_de_vcs" },
+            { name: "@anaclara.storess" },
+            { name: "@_emanuele_store" },
+            { name: "@v3nda.de.pets.clu" },
+            { name: "@biel_kzh" },
+            { name: "@Lojinha.damagali45" },
+            { name: "@m4h_storee" },
+            { name: "@mari.storeofc" },
+            { name: "@nayeonautica._" },
+            { name: "@daily_.dojuao" },
+            { name: "@XxLord_reservaxX" },
+            { name: "@japazxy00" },
+            { name: "@lizx.store" },
+            { name: "@store_kittyy" },
+            { name: "@_biastore" },
+            { name: "@adoptmebrasil444", nick: "el_shock444" },
+            { name: "@fehstoreofcc" },
+            { name: "@store.adoptme8" },
+            { name: "@helenafofa_legal" },
+            { name: "@makzin.karmas" },
+            { name: "@pfrct_vendakiara" },
+            { name: "@lojinhadark0" },
+            { name: "@bel_storeofc" },
+            { name: "@sh4rk.store", nick: "sharkstore" },
         ];
 
-function buscarPessoa() {
-    const input = document.getElementById('pesquisa');
-    const filtro = input.value.toLowerCase();
-    const lista = document.getElementById('listaPessoas');
-    lista.innerHTML = '';
+        const confiaveis = [
+            { name: "@Tia-Hermione", nick: "Potter_carla" },
+            { name: "@mahi.sttore", nick: "yykaulinda" },
+            { name: "@asumah_", nick: "O_ASUMA" },          
+            { name: "@juliostoreadoptme", nick: "Clunk2zt" },
+            { name: "@lojinhadarakyoficial", nick: "RaqueSantos380_2" },
+            { name: "@yuristoreoficial", nick: "yurienzovi" },
+            { name: "@vendasgabb" },
+            { name: "@vendasgablives" },
+            { name: "@starstoreofcial" },
+            { name: "@beear.store" },
+            { name: "@tia_lany_adoptmee" },
+            { name: "@joony888_", nick: "joony888" },
+            { name: "@crizz.adoptmee" },
+            { name: "@dk.shoppe2", nick: "dkshoppe" },
+            { name: "@jorgedoadot3" },
+            { name: "@may_angel26", nick: "mayangel" },
+            { name: "@tiavan_adoptme", nick: "tiavanxxxgamer" },
+            { name: "@spaidizin", nick: "spaidizin" },
+            { name: "@lojinhadofonix2", nick: "fonix2" },
+            { name: "@susubetcaue", nick: "susubet" },
+            { name: "@lekaterenzinoficial", nick: "lekaterenz" },
+            { name: "@ruivaaguiar_", nick: "ruivaaguiar" },
+        ];
 
-    // Lista de scammers
-    const scammers = [
-        "@panditastore._",
-        "@M4h_storee",
-        // ... outros scammers
-    ];
+        let classification = '';
 
-    // Lista de pessoas confiáveis
-    const confiaveis = [
-        "@Tia-Hermione",
-        "@juliostoreadoptme",
-        "@lojinhadarakyoficial",
-        "@vendasgabb",
-        // Adicione mais confiáveis aqui
-    ];
-
-    // Adiciona scammers à lista
-    scammers.forEach(scammer => {
-        if (scammer.toLowerCase().includes(filtro)) {
-            const item = document.createElement('li');
-            const icon = document.createElement('img');
-            icon.src = 'scammer-icon.png'; // Adicione um ícone para scammers
-            item.appendChild(icon);
-            item.appendChild(document.createTextNode(scammer));
-            item.classList.add('scammer');
-            lista.appendChild(item);
-        }
-    });
-
-    // Adiciona confiáveis à lista
-    confiaveis.forEach(confiavel => {
-        if (confiavel.toLowerCase().includes(filtro)) {
-            const item = document.createElement('li');
-            const icon = document.createElement('img');
-            icon.src = 'conf.jpg'; // Ícone para confiáveis
-            item.appendChild(icon);
-            item.appendChild(document.createTextNode(confiavel));
-            item.classList.add('confiavel');
-            lista.appendChild(item);
-        }
-    });
-}
-
-function buscarPessoa() {
-    const input = document.getElementById('pesquisa');
-    const filtro = input.value.toLowerCase();
-    const lista = document.getElementById('listaPessoas');
-    lista.innerHTML = '';
-
-    scammers.forEach(scammer => {
-        if (scammer.toLowerCase().includes(filtro)) {
-            const item = document.createElement('li');
-            const icon = document.createElement('img');
-            item.appendChild(icon);
-            item.appendChild(document.createTextNode(scammer));
-            item.classList.add('scammer');
-            lista.appendChild(item);
-        }
-    });
-
-    // Adicionar pessoas confiáveis aqui
-    const confiaveis = ["@Tia-Hermione", "@juliostoreadoptme", "@lojinhadarakyoficial", "@yuristoreoficial", "@vendasgabb", "@vendasgablives", "@starstoreofcial", "@beear.store", "@tia_lany_adoptmee", "@joony888_", "@crizz.adoptmee","@dk.shoppe2", "@jorgedoadot3", "@may_angel26", "@tiavan_adoptme", "@spaidizin", "@lojinhadofonix2", "@susubetcaue",  "@lekaterenzinoficial", "@ruivaaguiar_"];
-    confiaveis.forEach(confiavel => {
-        if (confiavel.toLowerCase().includes(filtro)) {
-            const item = document.createElement('li');
-            const icon = document.createElement('img');
-            icon.src = 'conf.jpg'; // Ícone para confiáveis
-            item.appendChild(icon);
-            item.appendChild(document.createTextNode(confiavel));
-            item.classList.add('confiavel');
-            lista.appendChild(item);
-        }
-    });
-}
-        function mostrarFormulario() {
-            const formContainer = document.getElementById('formContainer');
-            formContainer.style.display = formContainer.style.display === 'none' || formContainer.style.display === '' ? 'block' : 'none';
+        function classify(type) {
+            classification = type;
+            alert(`Classificação definida como: ${type}`);
         }
 
-        function sendEmail(event) {
+        function buscarPessoa() {
+            const input = document.getElementById('pesquisa');
+            const filtro = input.value.toLowerCase();
+            const lista = document.getElementById('listaPessoas');
+            lista.innerHTML = '';
+
+            scammers.forEach(scammer => {
+                if (scammer.name.toLowerCase().includes(filtro)) {
+                    const item = document.createElement('li');
+                    const icon = document.createElement('img');
+                    item.appendChild(icon);
+                    const scammerName = document.createElement('span');
+                    scammerName.classList.add('scammer');
+                    scammerName.textContent = `${scammer.name}`;
+                    item.appendChild(scammerName);
+                    const saibaMaisBtn = document.createElement('button');
+                    saibaMaisBtn.textContent = 'Saiba mais';
+                    saibaMaisBtn.onclick = () => abrirModal(scammer);
+                    item.appendChild(saibaMaisBtn);
+                    lista.appendChild(item);
+                }
+            });
+
+            confiaveis.forEach(confiavel => {
+                if (confiavel.name.toLowerCase().includes(filtro)) {
+                    const item = document.createElement('li');
+                    const icon = document.createElement('img');
+                    icon.src = 'conf.jpg';
+                    item.appendChild(icon);
+                    const confiavelName = document.createElement('span');
+                    confiavelName.classList.add('confiavel');
+                    confiavelName.textContent = `${confiavel.name}`;
+                    item.appendChild(confiavelName);
+                    const saibaMaisBtn = document.createElement('button');
+                    saibaMaisBtn.textContent = 'Saiba mais';
+                    saibaMaisBtn.onclick = () => abrirModal(confiavel);
+                    item.appendChild(saibaMaisBtn);
+                    lista.appendChild(item);
+                }
+            });
+        }
+
+        function abrirModal(pessoa) {
+            document.getElementById('modalTitle').textContent = pessoa.name;
+            document.getElementById('modalInfo').textContent = `Nick: ${pessoa.nick || 'N/A'}`;
+            document.getElementById('myModal').style.display = "block";
+        }
+
+        function fecharModal() {
+            document.getElementById('myModal').style.display = "none";
+        }
+
+        function mostrarFormulario(tipo) {
+            const formContainerNome = document.getElementById('formContainerNome');
+            const formContainerNick = document.getElementById('formContainerNick');
+
+            if (tipo === 'nome') {
+                formContainerNome.style.display = 'block';
+                formContainerNick.style.display = 'none';
+            } else {
+                formContainerNome.style.display = 'none';
+                formContainerNick.style.display = 'block';
+            }
+        }
+
+        function sendEmail(event, tipo) {
             event.preventDefault();
 
             const serviceID = "service_uto6ltk";
             const templateID = "template_ywc2wly"; 
 
-            const nick = document.getElementById('nick').value;
-            const email = document.getElementById('email').value;
-            const petInfo = document.getElementById('petInfo').value;
+            let emailData = {
+                from_name: '',
+                from_email: '',
+                pet_info: '',
+                nick_name: '',
+                email_nick: '',
+                classification: classification
+            };
 
-            console.log("Dados enviados:", { from_name: nick, from_email: email, pet_info: petInfo });
+            if (tipo === 'nome') {
+                emailData.from_name = document.getElementById('nome').value;
+                emailData.from_email = document.getElementById('emailNome').value;
+                emailData.pet_info = document.getElementById('petInfoNome').value;
+            } else {
+                emailData.nick_name = document.getElementById('nick').value;
+                emailData.email_nick = document.getElementById('emailNick').value;
+            }
 
-            emailjs.send(serviceID, templateID, {
-                from_name: nick,
-                from_email: email,
-                pet_info: petInfo
-            }).then((response) => {
-                console.log("E-mail enviado com sucesso!", response);
-                const successMessage = document.getElementById('successMessage');
+            emailjs.send(serviceID, templateID, emailData).then((response) => {
+                const successMessage = tipo === 'nome' ? document.getElementById('successMessageNome') : document.getElementById('successMessageNick');
                 successMessage.style.display = 'block';
-                document.getElementById('petForm').reset();
+                if (tipo === 'nome') {
+                    document.getElementById('petForm').reset();
+                } else {
+                    document.getElementById('nickForm').reset();
+                }
+                classification = ''; // Resetar classificação após o envio
                 setTimeout(() => {
                     successMessage.style.display = 'none';
                 }, 3000);
             }, (err) => {
-                console.error("Erro ao enviar e-mail:", err);
                 alert('Falha ao enviar, tente novamente: ' + JSON.stringify(err));
             });
         }
