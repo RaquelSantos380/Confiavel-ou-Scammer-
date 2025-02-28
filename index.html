@@ -228,6 +228,7 @@
         <h1>Pesquisa de Scammers e Confiáveis</h1>
     </header>
 
+
     <div class="search-container">
         <input type="text" id="pesquisa" onkeyup="buscarPessoa()" placeholder="Pesquise pelo nome...">
     </div>
@@ -248,10 +249,11 @@
             <input type="email" id="emailNome" required placeholder="Digite seu Email">
             <label for="petInfo">Envie as provas:</label>
             <input type="file" id="petInfoNome" required>
-            <div class="classification-buttons"> 
-            <button type="button" class="btn-classify btn-scammer" onclick="classify('scammer')">Scammer</button>  
-            <button type="button" class="btn-classify btn-trustworthy" onclick="classify('trustworthy')">Confiável</button>
-               
+            <!-- Adicione o elemento <img> para a pré-visualização da imagem -->
+            <img id="previewImage" src="#" alt="Preview da imagem" style="display:none; max-width: 300px; margin-top: 10px;">
+            <div class="classification-buttons">
+                <button type="button" class="btn-classify btn-scammer" onclick="classify('scammer')">Scammer</button>
+                <button type="button" class="btn-classify btn-trustworthy" onclick="classify('trustworthy')">Confiável</button>
             </div>
             <button type="submit" class="btn-adicionar">Enviar</button>
         </form>
@@ -264,7 +266,7 @@
             <label for="nick">Nick:</label>
             <input type="text" id="nick" required placeholder="Digite o Nick e o @">
             <label for="email">Seu Email:</label>
-            <input type="email" id="emailNick" required placeholder="Digite seu Email"> 
+            <input type="email" id="emailNick" required placeholder="Digite seu Email">
             <button type="submit" class="btn-adicionar">Enviar</button>
         </form>
         <div id="successMessageNick" style="display:none;">Nick enviado com Sucesso!</div>
@@ -282,6 +284,21 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
         emailjs.init("y2Y2FotVDMytchPMg");
+
+        // Função para exibir a imagem selecionada
+        document.getElementById('petInfoNome').addEventListener('change', function(event) {
+            const file = event.target.files[0]; // Pega o arquivo selecionado
+            if (file) {
+                const reader = new FileReader(); // Cria um FileReader para ler o arquivo
+                reader.onload = function(e) {
+                    const imgElement = document.getElementById('previewImage'); // Seleciona o elemento <img>
+                    imgElement.src = e.target.result; // Define o src da imagem como o conteúdo do arquivo
+                    imgElement.style.display = 'block'; // Exibe a imagem
+                };
+                reader.readAsDataURL(file); // Lê o arquivo como uma URL de dados
+            }
+        });
+
         const scammers = [
             { name: "@panditastore._" },
             { name: "@M4h_storee" },
