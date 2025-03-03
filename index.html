@@ -228,7 +228,6 @@
         <h1>Pesquisa de Scammers e Confiáveis</h1>
     </header>
 
-
     <div class="search-container">
         <input type="text" id="pesquisa" onkeyup="buscarPessoa()" placeholder="Pesquise pelo nome...">
     </div>
@@ -249,7 +248,6 @@
             <input type="email" id="emailNome" required placeholder="Digite seu Email">
             <label for="petInfo">Envie as provas:</label>
             <input type="file" id="petInfoNome" required>
-            <!-- Adicione o elemento <img> para a pré-visualização da imagem -->
             <img id="previewImage" src="#" alt="Preview da imagem" style="display:none; max-width: 300px; margin-top: 10px;">
             <div class="classification-buttons">
                 <button type="button" class="btn-classify btn-scammer" onclick="classify('scammer')">Scammer</button>
@@ -283,22 +281,29 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
+        // Inicializa o EmailJS
         emailjs.init("y2Y2FotVDMytchPMg");
+
+        // Configurações do Cloudinary
+        const cloudinaryConfig = {
+            cloudName: 'dp5dvbuq6', // Seu cloud_name
+            apiKey: '245377355166135', // Sua API Key
+            uploadPreset: 'ml_default' // Seu upload preset (use o padrão ou crie um)
+        };
 
         // Função para exibir a imagem selecionada
         document.getElementById('petInfoNome').addEventListener('change', function(event) {
-            const file = event.target.files[0]; // Pega o arquivo selecionado
+            const file = event.target.files[0];
             if (file) {
-                const reader = new FileReader(); // Cria um FileReader para ler o arquivo
+                const reader = new FileReader();
                 reader.onload = function(e) {
-                    const imgElement = document.getElementById('previewImage'); // Seleciona o elemento <img>
-                    imgElement.src = e.target.result; // Define o src da imagem como o conteúdo do arquivo
-                    imgElement.style.display = 'block'; // Exibe a imagem
+                    const imgElement = document.getElementById('previewImage');
+                    imgElement.src = e.target.result;
+                    imgElement.style.display = 'block';
                 };
-                reader.readAsDataURL(file); // Lê o arquivo como uma URL de dados
+                reader.readAsDataURL(file);
             }
         });
-
         const scammers = [
             { name: "@panditastore._" },
             { name: "@M4h_storee" },
@@ -357,7 +362,7 @@ Nick: "kitty_dyvaa0" },
         ];
 
         const confiaveis = [
-            { name: "@Tia-Hermione", nick: "Potter_carla", proofs: ["her1.jpg", "her2.jpg", "her3.jpg", "her4.jpg" ], proofCount: "1000+" },
+            { name: "@Tia-Hermione", nick: "Potter_carla", proofs: ["her1.jpg", "her2.jpg", "her3.jpg", "her4.jpg" ], proofCount: "desconhecida" },
             { name: "@mahi.sttore", nick: "yykaulinda" },
             { name: "@asumah_", nick: "O_ASUMA" },       
             { name: "@juliostoreadoptme", nick: "Clunk2zt", proofs: ["ju1.jpg", "ju2.jpg", "ju3.jpg" ], proofCount: "1500+" },
@@ -471,46 +476,67 @@ Nick: "kitty_dyvaa0" },
             }
         }
 
-        function sendEmail(event, tipo) {
-            event.preventDefault();
 
-            const serviceID = "service_uto6ltk";
-            const templateID = "template_ywc2wly"; 
+        // Função para enviar a imagem para o Cloudinary
+        async function uploadImageToCloudinary(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', cloudinaryConfig.uploadPreset);
 
-            let emailData = {
-                from_name: '',
-                from_email: '',
-                pet_info: '',
-                nick_name: '',
-                email_nick: '',
-                classification: classification
-            };
-
-            if (tipo === 'nome') {
-                emailData.from_name = document.getElementById('nome').value;
-                emailData.from_email = document.getElementById('emailNome').value;
-                emailData.pet_info = document.getElementById('petInfoNome').value;
-            } else {
-                emailData.nick_name = document.getElementById('nick').value;
-                emailData.email_nick = document.getElementById('emailNick').value;
-            }
-
-            emailjs.send(serviceID, templateID, emailData).then((response) => {
-                const successMessage = tipo === 'nome' ? document.getElementById('successMessageNome') : document.getElementById('successMessageNick');
-                successMessage.style.display = 'block';
-                if (tipo === 'nome') {
-                    document.getElementById('petForm').reset();
-                } else {
-                    document.getElementById('nickForm').reset();
+            const response = await fetch(
+                `https://api.cloudinary.com/v1_1/${cloudinaryConfig.cloudName}/image/upload`,
+                {
+                    method: 'POST',
+                    body: formData
                 }
-                classification = ''; // Resetar classificação após o envio
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 3000);
-            }, (err) => {
-                alert('Falha ao enviar, tente novamente: ' + JSON.stringify(err));
-            });
+            );
+            const data = await response.json();
+            return data.secure_url; // Retorna o link da imagem
         }
-    </script>
+
+        // Função para enviar o e-mail
+async function sendEmail(event, tipo) {
+    event.preventDefault();
+
+    const serviceID = "service_uto6ltk";
+    const templateID = "template_ywc2wly";
+
+    let emailData = {
+        from_name: document.getElementById('nome').value,
+        from_email: document.getElementById('emailNome').value,
+        pet_info: '',
+        pet_image: '', // Link da imagem
+        classification: classification
+    };
+
+    if (tipo === 'nome') {
+        const fileInput = document.getElementById('petInfoNome');
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            emailData.pet_info = file.name;
+
+            // Envia a imagem para o Cloudinary
+            try {
+                const imageUrl = await uploadImageToCloudinary(file);
+                emailData.pet_image = imageUrl; // Adiciona o link da imagem ao e-mail
+            } catch (error) {
+                alert('Erro ao enviar a imagem: ' + error);
+                return;
+            }
+        }
+    } else {
+        emailData.nick_name = document.getElementById('nick').value;
+        emailData.email_nick = document.getElementById('emailNick').value;
+    }
+
+    // Envia o e-mail via EmailJS
+    emailjs.send(serviceID, templateID, emailData).then((response) => {
+        alert('E-mail enviado com sucesso!');
+    }, (err) => {
+        alert('Falha ao enviar, tente novamente: ' + JSON.stringify(err));
+    });
+}
+
+</script>
 </body>
 </html>
