@@ -477,64 +477,67 @@ Nick: "kitty_dyvaa0" },
         }
 
 
-        // Função para enviar a imagem para o Cloudinary
-        async function uploadImageToCloudinary(file) {
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('upload_preset', cloudinaryConfig.uploadPreset);
+// Função para enviar a imagem para o Cloudinary
+async function uploadImageToCloudinary(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'meu_preset'); // Use o nome do seu preset aqui
 
-            const response = await fetch(
-                `https://api.cloudinary.com/v1_1/${cloudinaryConfig.cloudName}/image/upload`,
-                {
-                    method: 'POST',
-                    body: formData
-                }
-            );
-            const data = await response.json();
-            return data.secure_url; // Retorna o link da imagem
+    const response = await fetch(
+        `https://api.cloudinary.com/v1_1/dp5dvbuq6/image/upload`, // Substitua pelo seu cloud_name
+        {
+            method: 'POST',
+            body: formData
         }
+    );
+    const data = await response.json();
+    return data.secure_url; // Retorna o link da imagem
+}
 
-        // Função para enviar o e-mail
+// Função para enviar o e-mail
 async function sendEmail(event, tipo) {
     event.preventDefault();
 
     const serviceID = "service_uto6ltk";
     const templateID = "template_ywc2wly";
 
-    let emailData = {
-        from_name: document.getElementById('nome').value,
-        from_email: document.getElementById('emailNome').value,
-        pet_info: '',
-        pet_image: '', // Link da imagem
-        classification: classification
-    };
+    // Captura os dados do formulário
+    const nome = document.getElementById('nome').value;
+    const email = document.getElementById('emailNome').value;
+    const fileInput = document.getElementById('petInfoNome');
 
-    if (tipo === 'nome') {
-        const fileInput = document.getElementById('petInfoNome');
-        if (fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            emailData.pet_info = file.name;
-
-            // Envia a imagem para o Cloudinary
-            try {
-                const imageUrl = await uploadImageToCloudinary(file);
-                emailData.pet_image = imageUrl; // Adiciona o link da imagem ao e-mail
-            } catch (error) {
-                alert('Erro ao enviar a imagem: ' + error);
-                return;
-            }
-        }
-    } else {
-        emailData.nick_name = document.getElementById('nick').value;
-        emailData.email_nick = document.getElementById('emailNick').value;
+    // Verifica se um arquivo foi selecionado
+    if (fileInput.files.length === 0) {
+        alert('Por favor, selecione um arquivo de prova.');
+        return;
     }
 
-    // Envia o e-mail via EmailJS
-    emailjs.send(serviceID, templateID, emailData).then((response) => {
-        alert('E-mail enviado com sucesso!');
-    }, (err) => {
-        alert('Falha ao enviar, tente novamente: ' + JSON.stringify(err));
-    });
+    // Envia a imagem para o Cloudinary
+    const file = fileInput.files[0];
+    try {
+        const imageUrl = await uploadImageToCloudinary(file);
+
+        // Prepara os dados para enviar por e-mail
+        const emailData = {
+            from_name: nome,
+            from_email: email,
+            pet_info: file.name, // Nome do arquivo
+            pet_image: imageUrl, // Link da imagem no Cloudinary
+            classification: classification // Scammer ou Confiável
+        };
+
+        // Envia o e-mail usando EmailJS
+        emailjs.send(serviceID, templateID, emailData)
+            .then(() => {
+                alert('Nome enviado com sucesso!');
+                document.getElementById('successMessageNome').style.display = 'block';
+            })
+            .catch((err) => {
+                alert('Falha ao enviar: ' + JSON.stringify(err));
+            });
+    } catch (error) {
+        alert('Erro ao enviar a imagem: ' + error);
+    }
 }
 
 </script>
