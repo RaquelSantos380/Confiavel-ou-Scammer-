@@ -246,9 +246,10 @@
             <input type="text" id="nome" required placeholder="Digite o nome">
             <label for="email">Seu Email:</label>
             <input type="email" id="emailNome" required placeholder="Digite seu Email">
-            <label for="petInfo">Envie as provas:</label>
-            <input type="file" id="petInfoNome" required>
-            <img id="previewImage" src="#" alt="Preview da imagem" style="display:none; max-width: 300px; margin-top: 10px;">
+<label for="petInfo">Envie as provas:</label>
+<input type="file" id="petInfoNome" multiple required> <!-- Permite múltiplos arquivos -->
+<div id="previewContainer" style="display: flex; flex-wrap: wrap; margin-top: 10px;"></div>
+<img id="previewImage" src="#" alt="Preview da imagem" style="display:none; max-width: 300px; margin-top: 10px;">
             <div class="classification-buttons">
                 <button type="button" class="btn-classify btn-scammer" onclick="classify('scammer')">Scammer</button>
                 <button type="button" class="btn-classify btn-trustworthy" onclick="classify('trustworthy')">Confiável</button>
@@ -292,17 +293,25 @@
         };
 
         // Função para exibir a imagem selecionada
-        document.getElementById('petInfoNome').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imgElement = document.getElementById('previewImage');
-                    imgElement.src = e.target.result;
-                    imgElement.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
+document.getElementById('petInfoNome').addEventListener('change', function(event) {
+    const files = event.target.files;
+    const previewContainer = document.getElementById('previewContainer');
+    previewContainer.innerHTML = ''; // Limpa o container de pré-visualização
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const imgElement = document.createElement('img');
+            imgElement.src = e.target.result;
+            imgElement.style.maxWidth = '100px';
+            imgElement.style.margin = '5px';
+            previewContainer.appendChild(imgElement);
+        };
+
+        reader.readAsDataURL(file);
+    }
         });
         const scammers = [
             { name: "@panditastore._" },
@@ -518,38 +527,39 @@ async function sendEmail(event, tipo) {
     const email = document.getElementById('emailNome').value;
     const fileInput = document.getElementById('petInfoNome');
 
-    // Verifica se um arquivo foi selecionado
+    // Verifica se arquivos foram selecionados
     if (fileInput.files.length === 0) {
-        alert('Por favor, selecione um arquivo de prova.');
+        alert('Por favor, selecione pelo menos um arquivo de prova.');
         return;
     }
 
-    // Envia a imagem para o Cloudinary
-    const file = fileInput.files[0];
-    try {
-        const imageUrl = await uploadImageToCloudinary(file);
+    // Itera sobre cada arquivo selecionado
+    for (let i = 0; i < fileInput.files.length; i++) {
+        const file = fileInput.files[i];
 
-        // Prepara os dados para enviar por e-mail
-        const emailData = {
-            from_name: nome,
-            from_email: email,
-            pet_info: file.name, // Nome do arquivo
-            pet_image: imageUrl, // Link da imagem no Cloudinary
-            classification: classification // Scammer ou Confiável
-        };
+        try {
+            // Envia a imagem para o Cloudinary
+            const imageUrl = await uploadImageToCloudinary(file);
 
-        // Envia o e-mail usando EmailJS
-        emailjs.send(serviceID, templateID, emailData)
-            .then(() => {
-                alert('Nome enviado com sucesso!');
-                document.getElementById('successMessageNome').style.display = 'block';
-            })
-            .catch((err) => {
-                alert('Falha ao enviar: ' + JSON.stringify(err));
-            });
-    } catch (error) {
-        alert('Erro ao enviar a imagem: ' + error);
+            // Prepara os dados para enviar por e-mail
+            const emailData = {
+                from_name: nome,
+                from_email: email,
+                pet_info: file.name, // Nome do arquivo
+                pet_image: imageUrl, // Link da imagem no Cloudinary
+                classification: classification // Scammer ou Confiável
+            };
+
+            // Envia o e-mail usando EmailJS
+            await emailjs.send(serviceID, templateID, emailData);
+        } catch (error) {
+            alert('Erro ao enviar a imagem: ' + error);
+            return;
+        }
     }
+
+    alert('Todos os arquivos foram enviados com sucesso!');
+    document.getElementById('successMessageNome').style.display = 'block';
 }
 
 </script>
