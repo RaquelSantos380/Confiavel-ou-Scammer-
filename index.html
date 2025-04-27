@@ -2,11 +2,15 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Pesquisa de Scammers e Confiáveis</title>
     <link rel="icon" type="image/x-icon" href="alerta.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Poppins', sans-serif;
             background-image: url('alerta.jpg');
@@ -20,15 +24,19 @@
             align-items: center;
             justify-content: flex-start;
             min-height: 100vh;
+            -webkit-text-size-adjust: 100%;
+            touch-action: manipulation;
         }
 
         header {
             text-align: center;
-            margin: 20px 0;
+            margin: 15px 0;
+            padding: 0 10px;
+            width: 100%;
         }
 
         header img {
-            height: 60px;
+            height: 50px;
             border-radius: 50%;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
@@ -36,23 +44,25 @@
         h1 {
             font-family: 'Playfair+Display', serif;
             color: #00ff00;
-            font-size: 24px;
+            font-size: clamp(18px, 5vw, 24px);
             margin: 10px 0;
             text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+            line-height: 1.3;
         }
 
         .search-container {
-            width: 90%;
+            width: 95%;
             max-width: 350px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            padding: 0 10px;
         }
 
         input[type="text"], input[type="email"] {
-            width: 90%;
-            padding: 8px 10px;
+            width: 100%;
+            padding: 10px 12px;
             border: 2px solid #00ff00;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: clamp(14px, 4vw, 16px);
             background-color: rgba(255, 255, 255, 0.7);
             color: #444;
             transition: border-color 0.3s;
@@ -66,45 +76,45 @@
         ul {
             list-style-type: none;
             padding: 0;
-            width: 90%;
+            width: 95%;
             max-width: 400px;
-            margin: 0 auto;
+            margin: 0 auto 20px;
         }
 
         li {
-            padding: 8px;
-            margin: 5px 0;
+            padding: 10px;
+            margin: 8px 0;
             background-color: #ffffff;
             border: 1px solid #e1bee7;
             border-radius: 8px;
-            text-align: center;
+            text-align: left;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            font-size: 16px;
+            font-size: clamp(14px, 4vw, 16px);
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
         }
 
         li img {
             height: 25px;
-            margin-right: 5px;
+            margin-right: 8px;
             border-radius: 50%;
+            flex-shrink: 0;
         }
 
         .btn-adicionar {
-            padding: 8px 12px;
-            margin-top: 10px;
+            padding: 10px 15px;
+            margin: 10px 5px;
             background-color: #00ff00;
             color: black;
             border: none;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: clamp(14px, 4vw, 16px);
             transition: background-color 0.3s;
-        }
-
-        .btn-adicionar:hover {
-            background-color: #00cc00;
+            width: calc(50% - 10px);
+            max-width: 200px;
         }
 
         .form-container {
@@ -113,13 +123,17 @@
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-top: 10px;
-            width: 90%;
+            margin: 10px auto;
+            width: 95%;
             max-width: 400px;
         }
 
         .classification-buttons {
-            margin: 10px 0;
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .btn-classify {
@@ -127,23 +141,18 @@
             border: none;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 14px;
-            margin: 0 5px;
+            font-size: clamp(12px, 3.5vw, 14px);
             color: white;
+            flex-grow: 1;
+            min-width: 120px;
         }
 
         .btn-scammer {
             background-color: #ee416e;
-            padding: 5px 10px;
-            font-size: 12px;
-            width: auto;
         }
 
         .btn-trustworthy {
             background-color: #76993D;
-            padding: 5px 10px;
-            font-size: 12px;
-            width: auto;
         }
 
         .btn-classify:hover {
@@ -165,8 +174,9 @@
             background-color: #ffffff;
             border-top: 2px solid #e91e63;
             border-radius: 5px;
-            width: 90%;
+            width: 95%;
             max-width: 400px;
+            font-size: clamp(12px, 3vw, 14px);
         }
 
         footer a {
@@ -180,10 +190,12 @@
 
         .scammer {
             color: red;
+            flex-grow: 1;
         }
 
         .confiavel {
             color: green;
+            flex-grow: 1;
         }
 
         /* Modal principal */
@@ -198,17 +210,21 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
         }
 
         .modal-content {
             background-color: white;
-            padding: 30px;
+            padding: 20px;
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             animation: fadeIn 0.5s ease-in-out;
             max-width: 400px;
-            width: 90%;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         @keyframes fadeIn {
@@ -245,7 +261,7 @@
 
         .success-modal-content {
             background: white;
-            padding: 30px;
+            padding: 20px;
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
@@ -254,13 +270,13 @@
         }
 
         .success-modal-content h2 {
-            font-size: 2em;
+            font-size: clamp(20px, 5vw, 24px);
             color: #00cc00;
             margin-bottom: 15px;
         }
 
         .success-modal-content p {
-            font-size: 1.2em;
+            font-size: clamp(14px, 4vw, 16px);
             color: #333;
         }
 
@@ -268,19 +284,22 @@
         #previewContainer {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
             margin-top: 10px;
+            justify-content: center;
         }
 
         #previewContainer img {
             max-width: 100px;
-            border-radius: 10px;
+            max-height: 100px;
+            border-radius: 8px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            object-fit: cover;
         }
 
         /* Contador regressivo */
         .countdown {
-            font-size: 24px;
+            font-size: clamp(20px, 6vw, 24px);
             font-weight: bold;
             color: #00cc00;
             margin: 10px 0;
@@ -288,11 +307,58 @@
         
         /* Estilo para o aviso */
         .aviso-nick {
-            font-size: 12px;
+            font-size: clamp(11px, 3vw, 12px);
             color: #ff0000;
-            margin-top: 5px;
+            margin-top: 8px;
             font-weight: bold;
             text-align: center;
+            line-height: 1.4;
+        }
+
+        /* Botão Saiba Mais */
+        li button {
+            padding: 6px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: clamp(12px, 3.5vw, 14px);
+            margin-left: 8px;
+            white-space: nowrap;
+        }
+
+        /* Estilos para formulários */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
+            font-size: clamp(14px, 4vw, 16px);
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: clamp(14px, 4vw, 16px);
+        }
+
+        /* Melhorias para telas maiores */
+        @media (min-width: 600px) {
+            .btn-adicionar {
+                width: auto;
+                padding: 10px 20px;
+            }
+            
+            li {
+                flex-wrap: nowrap;
+            }
         }
     </style>
 </head>
@@ -303,43 +369,53 @@
     </header>
 
     <div class="search-container">
-        <input type="text" id="pesquisa" onkeyup="buscarPessoa()" placeholder="Pesquise pelo nome...">
+        <input type="text" id="pesquisa" onkeyup="buscarPessoa()" placeholder="Pesquise pelo nome..." autocomplete="off">
     </div>
 
     <ul id="listaPessoas">
         <!-- Aqui aparecerão os resultados da pesquisa -->
     </ul>
 
-    <button class="btn-adicionar" onclick="mostrarFormulario('nome')">Adicionar Nome</button>
-    <button class="btn-adicionar" onclick="mostrarFormulario('nick')">Faltou algum Nick?</button>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; width: 100%;">
+        <button class="btn-adicionar" onclick="mostrarFormulario('nome')">Adicionar Nome</button>
+        <button class="btn-adicionar" onclick="mostrarFormulario('nick')">Faltou Nick?</button>
+    </div>
 
     <div class="form-container" id="formContainerNome">
-        <h3>Adicionar Nome na Lista</h3>
+        <h3 style="text-align: center; margin-top: 0; font-size: clamp(16px, 4.5vw, 20px);">Adicionar Nome na Lista</h3>
         <form id="petForm" onsubmit="sendEmail(event, 'nome')">
             <label for="nome">Nome:</label>
             <input type="text" id="nome" required placeholder="Digite o nome">
+            
             <label for="email">Seu Email:</label>
             <input type="email" id="emailNome" required placeholder="Digite seu Email">
+            
             <label for="petInfo">Envie as provas:</label>
             <input type="file" id="petInfoNome" accept="image/*" multiple required>
+            
             <div id="previewContainer"></div>
+            
             <div class="classification-buttons">
                 <button type="button" class="btn-classify btn-scammer" onclick="classify('scammer')">Scammer</button>
                 <button type="button" class="btn-classify btn-trustworthy" onclick="classify('trustworthy')">Confiável</button>
             </div>
-            <button type="submit" class="btn-adicionar">Enviar</button>
+            
+            <button type="submit" class="btn-adicionar" style="width: 100%; max-width: none; margin: 10px 0 0;">Enviar</button>
         </form>
     </div>
 
     <div class="form-container" id="formContainerNick">
-        <h3>Escreva o Nick:</h3>
+        <h3 style="text-align: center; margin-top: 0; font-size: clamp(16px, 4.5vw, 20px);">Escreva o Nick:</h3>
         <form id="nickForm" onsubmit="sendEmail(event, 'nick')">
             <label for="nick">Nick e o @:</label>
             <input type="text" id="nick" required placeholder="Digite o Nick e o @ do Tiktok">
+            
             <p class="aviso-nick">Aviso: Se colocar o Nick aqui ele só será adicionado ao @ que já está na Lista, se quer seu nome na lista, envie os dados na opção "Adicionar Nome", com Provas!</p>
+            
             <label for="email">Seu Email:</label>
             <input type="email" id="emailNick" required placeholder="Digite seu Email">
-            <button type="submit" class="btn-adicionar">Enviar</button>
+            
+            <button type="submit" class="btn-adicionar" style="width: 100%; max-width: none; margin: 10px 0 0;">Enviar</button>
         </form>
     </div>
 
@@ -347,7 +423,7 @@
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="fecharModal()">&times;</span>
-            <h2 id="modalTitle"></h2>
+            <h2 id="modalTitle" style="word-break: break-word;"></h2>
             <p id="modalInfo"></p>
             <div id="modalProofs"></div>
         </div>
@@ -359,7 +435,7 @@
             <h2>🎉 Enviado com sucesso! 🎉</h2>
             <p>Obrigado por contribuir com nossa pesquisa!</p>
             <div class="countdown" id="countdown">5</div>
-            <p>Fechando automaticamente em <span id="countdown">5</span> segundos...</p>
+            <p>Fechando automaticamente em <span id="countdownText">5</span> segundos...</p>
         </div>
     </div>
 
@@ -521,15 +597,19 @@
                     const item = document.createElement('li');
                     const icon = document.createElement('img');
                     icon.src = 'scam.jpg';
+                    icon.alt = 'Scammer';
                     item.appendChild(icon);
+                    
                     const scammerName = document.createElement('span');
                     scammerName.classList.add('scammer');
-                    scammerName.textContent = `${scammer.name}`;
+                    scammerName.textContent = scammer.name;
                     item.appendChild(scammerName);
+                    
                     const saibaMaisBtn = document.createElement('button');
                     saibaMaisBtn.textContent = 'Saiba mais';
                     saibaMaisBtn.onclick = () => abrirModal(scammer);
                     item.appendChild(saibaMaisBtn);
+                    
                     lista.appendChild(item);
                 }
             });
@@ -540,15 +620,19 @@
                     const item = document.createElement('li');
                     const icon = document.createElement('img');
                     icon.src = 'conf.jpg';
+                    icon.alt = 'Confiável';
                     item.appendChild(icon);
+                    
                     const confiavelName = document.createElement('span');
                     confiavelName.classList.add('confiavel');
-                    confiavelName.textContent = `${confiavel.name}`;
+                    confiavelName.textContent = confiavel.name;
                     item.appendChild(confiavelName);
+                    
                     const saibaMaisBtn = document.createElement('button');
                     saibaMaisBtn.textContent = 'Saiba mais';
                     saibaMaisBtn.onclick = () => abrirModal(confiavel);
                     item.appendChild(saibaMaisBtn);
+                    
                     lista.appendChild(item);
                 }
             });
@@ -563,20 +647,22 @@
 
             if (pessoa.proofs) {
                 const proofTitle = document.createElement('p');
-                proofTitle.textContent = `Quantidade de proofs: ${pessoa.proofCount || 'N/A'}`;
+                proofTitle.textContent = `Quantidade de provas: ${pessoa.proofCount || pessoa.proofs.length}`;
                 modalProofs.appendChild(proofTitle);
 
                 pessoa.proofs.forEach(proof => {
                     const proofImage = document.createElement('img');
                     proofImage.src = proof;
                     proofImage.style.maxWidth = '100%';
-                    proofImage.style.marginTop = '10px';
+                    proofImage.style.margin = '10px 0';
                     proofImage.style.borderRadius = '8px';
+                    proofImage.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+                    proofImage.alt = `Prova para ${pessoa.name}`;
                     modalProofs.appendChild(proofImage);
                 });
             }
 
-            document.getElementById('myModal').style.display = "block";
+            document.getElementById('myModal').style.display = "flex";
         }
 
         // Função para fechar o modal
@@ -596,6 +682,9 @@
                 formContainerNome.style.display = 'none';
                 formContainerNick.style.display = 'block';
             }
+            
+            // Rolar para o formulário
+            document.getElementById(tipo === 'nome' ? 'formContainerNome' : 'formContainerNick').scrollIntoView({ behavior: 'smooth' });
         }
 
         // Função para fazer upload de imagem para o Cloudinary
@@ -638,8 +727,7 @@
                 reader.onload = function(e) {
                     const imgElement = document.createElement('img');
                     imgElement.src = e.target.result;
-                    imgElement.style.maxWidth = '100px';
-                    imgElement.style.margin = '5px';
+                    imgElement.alt = 'Preview da imagem ' + (i + 1);
                     previewContainer.appendChild(imgElement);
                 };
 
@@ -713,6 +801,7 @@
                 if (tipo === 'nome') {
                     document.getElementById('petForm').reset();
                     document.getElementById('previewContainer').innerHTML = '';
+                    classification = ''; // Resetar classificação
                 } else {
                     document.getElementById('nickForm').reset();
                 }
@@ -733,11 +822,15 @@
 
             let countdown = 5;
             const countdownElement = document.getElementById('countdown');
+            const countdownText = document.getElementById('countdownText');
+            
             countdownElement.textContent = countdown;
+            countdownText.textContent = countdown;
 
             const timer = setInterval(() => {
                 countdown--;
                 countdownElement.textContent = countdown;
+                countdownText.textContent = countdown;
 
                 if (countdown <= 0) {
                     clearInterval(timer);
@@ -748,10 +841,31 @@
 
         // Fechar modal de sucesso manualmente
         document.querySelector('.success-modal').addEventListener('click', function(e) {
-            if (e.target === this || e.target.classList.contains('close')) {
-                this.style.display = 'none';
-            }
-        });
-    </script>
-</body>
-</html>
+            if (e.target === this) {
+            this.style.display = 'none';
+        }
+    });
+
+    // Fechar modal principal ao clicar fora
+    document.getElementById('myModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            fecharModal();
+        }
+    });
+
+    // Carregar a lista inicialmente
+    buscarPessoa();
+
+    // Evitar zoom em dispositivos móveis
+    document.addEventListener('gesturestart', function(e) {
+        e.preventDefault();
+    });
+
+    // Melhorar a resposta ao toque
+    document.addEventListener('touchstart', function() {}, { passive: true });
+
+    // Focar no campo de pesquisa ao carregar a página
+    window.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('pesquisa').focus();
+    });
+</script>
