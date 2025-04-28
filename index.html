@@ -42,7 +42,7 @@
         }
 
         h1 {
-            font-family: 'Playfair+Display', serif;
+            font-family: 'Playfair Display', serif;
             color: #00ff00;
             font-size: clamp(18px, 5vw, 24px);
             margin: 10px 0;
@@ -315,10 +315,10 @@
             line-height: 1.4;
         }
 
-        /* Botão Saiba Mais */
+        /* Botão Saiba Mais - Alterado para cor neutra */
         li button {
             padding: 6px 12px;
-            background-color: #4CAF50;
+            background-color: #6c757d;
             color: white;
             border: none;
             border-radius: 15px;
@@ -326,6 +326,36 @@
             font-size: clamp(12px, 3.5vw, 14px);
             margin-left: 8px;
             white-space: nowrap;
+        }
+
+        .btn-lista-completa {
+            padding: 10px 15px;
+            margin: 20px auto;
+            background-color: rgba(108, 117, 125, 0.5); /* Mais transparente */
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: clamp(14px, 4vw, 16px);
+            display: block;
+            width: 80%;
+            max-width: 300px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .btn-lista-completa:hover {
+            background-color: rgba(90, 98, 104, 0.7); /* Mais transparente */
+        }
+
+        .lista-expandida {
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: rgba(255, 255, 255, 0.9);
         }
 
         /* Estilos para formulários */
@@ -373,8 +403,10 @@
     </div>
 
     <ul id="listaPessoas">
-        <!-- Aqui aparecerão os resultados da pesquisa -->
+        <!-- Lista vazia inicialmente -->
     </ul>
+
+    <button class="btn-lista-completa" onclick="mostrarListaCompleta()">Ver Lista Completa</button>
 
     <div style="display: flex; flex-wrap: wrap; justify-content: center; width: 100%;">
         <button class="btn-adicionar" onclick="mostrarFormulario('nome')">Adicionar Nome</button>
@@ -577,6 +609,69 @@
         ];
 
         let classification = '';
+        let listaCompletaVisivel = false;
+
+        // Função para mostrar/ocultar lista completa
+        function mostrarListaCompleta() {
+            const lista = document.getElementById('listaPessoas');
+            const botao = document.querySelector('.btn-lista-completa');
+            listaCompletaVisivel = !listaCompletaVisivel;
+            
+            if (listaCompletaVisivel) {
+                // Mostrar todos os itens
+                lista.innerHTML = '';
+                
+                // Adicionar scammers
+                scammers.forEach(scammer => {
+                    const item = document.createElement('li');
+                    const icon = document.createElement('img');
+                    icon.src = 'scam.jpg';
+                    icon.alt = 'Scammer';
+                    item.appendChild(icon);
+                    
+                    const scammerName = document.createElement('span');
+                    scammerName.classList.add('scammer');
+                    scammerName.textContent = scammer.name;
+                    item.appendChild(scammerName);
+                    
+                    const saibaMaisBtn = document.createElement('button');
+                    saibaMaisBtn.textContent = 'Saiba mais';
+                    saibaMaisBtn.onclick = () => abrirModal(scammer);
+                    item.appendChild(saibaMaisBtn);
+                    
+                    lista.appendChild(item);
+                });
+                
+                // Adicionar confiáveis
+                confiaveis.forEach(confiavel => {
+                    const item = document.createElement('li');
+                    const icon = document.createElement('img');
+                    icon.src = 'conf.jpg';
+                    icon.alt = 'Confiável';
+                    item.appendChild(icon);
+                    
+                    const confiavelName = document.createElement('span');
+                    confiavelName.classList.add('confiavel');
+                    confiavelName.textContent = confiavel.name;
+                    item.appendChild(confiavelName);
+                    
+                    const saibaMaisBtn = document.createElement('button');
+                    saibaMaisBtn.textContent = 'Saiba mais';
+                    saibaMaisBtn.onclick = () => abrirModal(confiavel);
+                    item.appendChild(saibaMaisBtn);
+                    
+                    lista.appendChild(item);
+                });
+                
+                botao.textContent = 'Ocultar Lista';
+                lista.classList.add('lista-expandida');
+            } else {
+                // Limpar a lista
+                lista.innerHTML = '';
+                botao.textContent = 'Ver Lista Completa';
+                lista.classList.remove('lista-expandida');
+            }
+        }
 
         // Função para classificar como scammer ou confiável
         function classify(type) {
@@ -589,7 +684,14 @@
             const input = document.getElementById('pesquisa');
             const filtro = input.value.toLowerCase();
             const lista = document.getElementById('listaPessoas');
+            
+            // Sempre limpa a lista ao pesquisar
             lista.innerHTML = '';
+
+            // Se o campo de pesquisa estiver vazio, não mostra nada
+            if (filtro.trim() === '') {
+                return;
+            }
 
             // Adiciona scammers que correspondem à pesquisa
             scammers.forEach(scammer => {
@@ -682,7 +784,7 @@
                 formContainerNome.style.display = 'none';
                 formContainerNick.style.display = 'block';
             }
-            
+
             // Rolar para o formulário
             document.getElementById(tipo === 'nome' ? 'formContainerNome' : 'formContainerNick').scrollIntoView({ behavior: 'smooth' });
         }
@@ -735,113 +837,113 @@
             }
         });
 
-        // Função principal para enviar o formulário
-        async function sendEmail(event, tipo) {
-            event.preventDefault();
+        // Função principal para envio formulário
+async function sendEmail(event, tipo) {
+event.preventDefault();
 
-            const submitButton = event.target.querySelector('button[type="submit"]');
-            submitButton.disabled = true;
-            submitButton.textContent = "Enviando...";
+        const submitButton = event.target.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = "Enviando...";
 
-            const serviceID = "service_uto6ltk";
-            const templateID = "template_ywc2wly";
+        const serviceID = "service_uto6ltk";
+        const templateID = "template_ywc2wly";
 
-            try {
-                if (tipo === 'nome') {
-                    // Processamento do formulário de nome com imagens
-                    const nome = document.getElementById('nome').value;
-                    const email = document.getElementById('emailNome').value;
-                    const fileInput = document.getElementById('petInfoNome');
-                    
-                    if (!classification) {
-                        alert('Por favor, classifique como Scammer ou Confiável');
-                        submitButton.disabled = false;
-                        submitButton.textContent = "Enviar";
-                        return;
-                    }
+        try {
+            if (tipo === 'nome') {
+                // Processamento do formulário de nome com imagens
+                const nome = document.getElementById('nome').value;
+                const email = document.getElementById('emailNome').value;
+                const fileInput = document.getElementById('petInfoNome');
+                
+                if (!classification) {
+                    alert('Por favor, classifique como Scammer ou Confiável');
+                    submitButton.disabled = false;
+                    submitButton.textContent = "Enviar";
+                    return;
+                }
 
-                    if (fileInput.files.length === 0) {
-                        alert('Por favor, selecione pelo menos uma imagem de prova');
-                        submitButton.disabled = false;
-                        submitButton.textContent = "Enviar";
-                        return;
-                    }
+                if (fileInput.files.length === 0) {
+                    alert('Por favor, selecione pelo menos uma imagem de prova');
+                    submitButton.disabled = false;
+                    submitButton.textContent = "Enviar";
+                    return;
+                }
 
-                    // Faz upload de cada imagem e envia e-mail
-                    for (let i = 0; i < fileInput.files.length; i++) {
-                        const file = fileInput.files[i];
-                        const imageUrl = await uploadImageToCloudinary(file);
-
-                        await emailjs.send(serviceID, templateID, {
-                            from_name: nome,
-                            from_email: email,
-                            pet_info: `${classification === 'scammer' ? 'Scammer' : 'Confiável'}: ${nome}`,
-                            pet_image: imageUrl,
-                            classification: classification
-                        });
-                    }
-                } else {
-                    // Processamento do formulário de nick (sem imagens)
-                    const nick = document.getElementById('nick').value;
-                    const email = document.getElementById('emailNick').value;
+                // Faz upload de cada imagem e envia e-mail
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    const file = fileInput.files[i];
+                    const imageUrl = await uploadImageToCloudinary(file);
 
                     await emailjs.send(serviceID, templateID, {
-                        from_name: nick,
+                        from_name: nome,
                         from_email: email,
-                        pet_info: `Nick faltante: ${nick}`,
-                        pet_image: 'N/A',
-                        classification: 'nick'
+                        pet_info: `${classification === 'scammer' ? 'Scammer' : 'Confiável'}: ${nome}`,
+                        pet_image: imageUrl,
+                        classification: classification
                     });
                 }
+            } else {
+                // Processamento do formulário de nick (sem imagens)
+                const nick = document.getElementById('nick').value;
+                const email = document.getElementById('emailNick').value;
 
-                // Mostra modal de sucesso
-                showSuccessModal();
-                
-                // Limpa o formulário
-                if (tipo === 'nome') {
-                    document.getElementById('petForm').reset();
-                    document.getElementById('previewContainer').innerHTML = '';
-                    classification = ''; // Resetar classificação
-                } else {
-                    document.getElementById('nickForm').reset();
-                }
-
-            } catch (error) {
-                console.error('Erro ao enviar:', error);
-                alert('Ocorreu um erro ao enviar. Por favor, tente novamente.');
-            } finally {
-                submitButton.disabled = false;
-                submitButton.textContent = "Enviar";
+                await emailjs.send(serviceID, templateID, {
+                    from_name: nick,
+                    from_email: email,
+                    pet_info: `Nick faltante: ${nick}`,
+                    pet_image: 'N/A',
+                    classification: 'nick'
+                });
             }
-        }
 
-        // Função para mostrar modal de sucesso com contagem regressiva
-        function showSuccessModal() {
-            const successModal = document.getElementById('successModal');
-            successModal.style.display = 'flex';
-
-            let countdown = 5;
-            const countdownElement = document.getElementById('countdown');
-            const countdownText = document.getElementById('countdownText');
+            // Mostra modal de sucesso
+            showSuccessModal();
             
+            // Limpa o formulário
+            if (tipo === 'nome') {
+                document.getElementById('petForm').reset();
+                document.getElementById('previewContainer').innerHTML = '';
+                classification = ''; // Resetar classificação
+            } else {
+                document.getElementById('nickForm').reset();
+            }
+
+        } catch (error) {
+            console.error('Erro ao enviar:', error);
+            alert('Ocorreu um erro ao enviar. Por favor, tente novamente.');
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = "Enviar";
+        }
+    }
+
+    // Função para mostrar modal de sucesso com contagem regressiva
+    function showSuccessModal() {
+        const successModal = document.getElementById('successModal');
+        successModal.style.display = 'flex';
+
+        let countdown = 5;
+        const countdownElement = document.getElementById('countdown');
+        const countdownText = document.getElementById('countdownText');
+        
+        countdownElement.textContent = countdown;
+        countdownText.textContent = countdown;
+
+        const timer = setInterval(() => {
+            countdown--;
             countdownElement.textContent = countdown;
             countdownText.textContent = countdown;
 
-            const timer = setInterval(() => {
-                countdown--;
-                countdownElement.textContent = countdown;
-                countdownText.textContent = countdown;
+            if (countdown <= 0) {
+                clearInterval(timer);
+                successModal.style.display = 'none';
+            }
+        }, 1000);
+    }
 
-                if (countdown <= 0) {
-                    clearInterval(timer);
-                    successModal.style.display = 'none';
-                }
-            }, 1000);
-        }
-
-        // Fechar modal de sucesso manualmente
-        document.querySelector('.success-modal').addEventListener('click', function(e) {
-            if (e.target === this) {
+    // Fechar modal de sucesso manualmente
+    document.querySelector('.success-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
             this.style.display = 'none';
         }
     });
@@ -853,8 +955,10 @@
         }
     });
 
-    // Carregar a lista inicialmente
-    buscarPessoa();
+    // Focar no campo de pesquisa ao carregar a página
+    window.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('pesquisa').focus();
+    });
 
     // Evitar zoom em dispositivos móveis
     document.addEventListener('gesturestart', function(e) {
@@ -863,9 +967,4 @@
 
     // Melhorar a resposta ao toque
     document.addEventListener('touchstart', function() {}, { passive: true });
-
-    // Focar no campo de pesquisa ao carregar a página
-    window.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('pesquisa').focus();
-    });
 </script>
