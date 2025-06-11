@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>More actions
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -10,7 +10,7 @@
         * {
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Poppins', sans-serif;
             background-image: url('alerta.jpg');
@@ -155,10 +155,6 @@
             background-color: #76993D;
         }
 
-        .btn-suspect {
-            background-color: #FFA500;
-        }
-
         .btn-classify:hover {
             opacity: 0.8;
         }
@@ -169,10 +165,6 @@
 
         .btn-trustworthy:hover {
             background-color: #a8d08d;
-        }
-
-        .btn-suspect:hover {
-            background-color: #ffc04d;
         }
 
         footer {
@@ -203,11 +195,6 @@
 
         .confiavel {
             color: green;
-            flex-grow: 1;
-        }
-
-        .suspeito {
-            color: #FFA500;
             flex-grow: 1;
         }
 
@@ -317,7 +304,7 @@
             color: #00cc00;
             margin: 10px 0;
         }
-        
+
         /* Estilo para o aviso */
         .aviso-nick {
             font-size: clamp(11px, 3vw, 12px);
@@ -344,7 +331,7 @@
         .btn-lista-completa {
             padding: 10px 15px;
             margin: 20px auto;
-            background-color: rgba(108, 117, 125, 0.5);
+            background-color: rgba(108, 117, 125, 0.5); /* Mais transparente */
             color: white;
             border: none;
             border-radius: 20px;
@@ -358,7 +345,7 @@
         }
 
         .btn-lista-completa:hover {
-            background-color: rgba(90, 98, 104, 0.7);
+            background-color: rgba(90, 98, 104, 0.7); /* Mais transparente */
         }
 
         .lista-expandida {
@@ -398,7 +385,7 @@
                 width: auto;
                 padding: 10px 20px;
             }
-            
+
             li {
                 flex-wrap: nowrap;
             }
@@ -408,7 +395,7 @@
 <body>
     <header>
         <img src="hacker.jpg" alt="Logo da Raky">
-        <h1>Pesquisa de Scammers, Confiáveis e Suspeitos</h1>
+        <h1>Pesquisa de Scammers e Confiáveis</h1>
     </header>
 
     <div class="search-container">
@@ -431,21 +418,20 @@
         <form id="petForm" onsubmit="sendEmail(event, 'nome')">
             <label for="nome">Nome:</label>
             <input type="text" id="nome" required placeholder="Digite o nome">
-            
+
             <label for="email">Seu Email:</label>
             <input type="email" id="emailNome" required placeholder="Digite seu Email">
-            
+
             <label for="petInfo">Envie as provas:</label>
             <input type="file" id="petInfoNome" accept="image/*" multiple required>
-            
+
             <div id="previewContainer"></div>
-            
+
             <div class="classification-buttons">
                 <button type="button" class="btn-classify btn-scammer" onclick="classify('scammer')">Scammer</button>
                 <button type="button" class="btn-classify btn-trustworthy" onclick="classify('trustworthy')">Confiável</button>
-                <button type="button" class="btn-classify btn-suspect" onclick="classify('suspect')">Suspeito</button>
             </div>
-            
+
             <button type="submit" class="btn-adicionar" style="width: 100%; max-width: none; margin: 10px 0 0;">Enviar</button>
         </form>
     </div>
@@ -455,12 +441,12 @@
         <form id="nickForm" onsubmit="sendEmail(event, 'nick')">
             <label for="nick">Nick e o @:</label>
             <input type="text" id="nick" required placeholder="Digite o Nick e o @ do Tiktok">
-            
+
             <p class="aviso-nick">Aviso: Se colocar o Nick aqui ele só será adicionado ao @ que já está na Lista, se quer seu nome na lista, envie os dados na opção "Adicionar Nome", com Provas!</p>
-            
+
             <label for="email">Seu Email:</label>
             <input type="email" id="emailNick" required placeholder="Digite seu Email">
-            
+
             <button type="submit" class="btn-adicionar" style="width: 100%; max-width: none; margin: 10px 0 0;">Enviar</button>
         </form>
     </div>
@@ -497,7 +483,7 @@
             uploadPreset: 'meu_preset'
         };
 
-        // Lista de scammers, confiáveis e suspeitos
+        // Lista de scammers e confiáveis
         const scammers = [
             { name: "@panditastore._" },
             { name: "@iinfecteed", nick: "IsabellyGamer612", proofs: ["inff.jpg","inff2.jpg","inff3.jpg", "inff4.jpg","inff5.jpg","inff6.jpg","inff7.jpg" ] },
@@ -518,6 +504,7 @@
             { name: "@daenerys_shop" },
             { name: "@junwstore" },
             { name: "@sky_lojinha", nick: "cherry_store" },
+            { name: "lmzinho.kz", nick: "Mascosdsta1" },
             { name: "@M4h_storee" },
             { name: "@clawn.store_" },
             { name: "@Desenhos_cisne" },
@@ -591,188 +578,177 @@
             { name: "@lizx.store" },
             { name: "@store_kittyy" },
             { name: "@Biaa.5826", nick: "Maoliveira20015" },
-            { name: 
-let classification = '';
-let listaCompletaVisivel = false;
+            { name: "@_biastore" },
+            { name: "@Andrezynxx", proofs: ["and.png"] },
+            { name: "@.kauanstore", nick: "kauangabrieltdb", proofs: ["kaua.png", "kaua2.png"] },
+            { name: "@adoptmebrasil444", nick: "el_shock444" },
+            { name: "@adoptmecompras123", nick: "Mauriciogamesduda" },
+            { name: "@leonardookkkkjjj2", nick: "Mauriciogamesduda" },
+            { name: "@fehstoreofcc" },
+            { name: "@store.adoptme8" },
+            { name: "@helenafofa_legal" },
+            { name: "@makzin.karmas" },
+            { name: "@dream.store052" },
+            { name: "@alice.stor4" },
+            { name: "@ylucas_shop 692" },
+            { name: "@kaio.abrao" },
+            { name: "@.yasmincosta11" },
+            { name: "@goncalvess.7k" },
+            { name: "@dream.store052" },
+            { name: "@anacenter1" },
+            { name: "@marih_luluh" },
+            { name: "@yunapeach7" },
+            { name: "@queen.yyt.reserv" },
+            { name: "@luluwzz_a" },
+            { name: "@viic.store" },
+            { name: "@blondsmean" },
+            { name: "@phzin_store240" },
+            { name: "@.brenostore" },
+            { name: "@phzin10storee" },
+            { name: "@giraffestore10" },
+            { name: "@luhstore1" },
+            { name: "@laviniastore1" },
+            { name: "@pfrct_vendakiara" },
+            { name: "@lojinhadark0" },
+            { name: "@bel_storeofc" },
+            { name: "@sh4rk.store", nick: "sharkstore" },
+        ];
 
-// Função para mostrar/ocultar lista completa
-function mostrarListaCompleta() {
-    const lista = document.getElementById('listaPessoas');
-    const botao = document.querySelector('.btn-lista-completa');
-    listaCompletaVisivel = !listaCompletaVisivel;
-    
-    if (listaCompletaVisivel) {
-        // Mostrar todos os itens
-        lista.innerHTML = '';
-        
-        // Adicionar scammers
-        scammers.forEach(scammer => {
-            const item = document.createElement('li');
-            const icon = document.createElement('img');
-            icon.src = 'scam.jpg';
-            icon.alt = 'Scammer';
-            item.appendChild(icon);
-            
-            const scammerName = document.createElement('span');
-            scammerName.classList.add('scammer');
-            scammerName.textContent = scammer.name;
-            item.appendChild(scammerName);
-            
-            const saibaMaisBtn = document.createElement('button');
-            saibaMaisBtn.textContent = 'Saiba mais';
-            saibaMaisBtn.onclick = () => abrirModal(scammer);
-            item.appendChild(saibaMaisBtn);
-            
-            lista.appendChild(item);
-        });
-        
-        // Adicionar confiáveis
-        confiaveis.forEach(confiavel => {
-            const item = document.createElement('li');
-            const icon = document.createElement('img');
-            icon.src = 'conf.jpg';
-            icon.alt = 'Confiável';
-            item.appendChild(icon);
-            
-            const confiavelName = document.createElement('span');
-            confiavelName.classList.add('confiavel');
-            confiavelName.textContent = confiavel.name;
-            item.appendChild(confiavelName);
-            
-            const saibaMaisBtn = document.createElement('button');
-            saibaMaisBtn.textContent = 'Saiba mais';
-            saibaMaisBtn.onclick = () => abrirModal(confiavel);
-            item.appendChild(saibaMaisBtn);
-            
-            lista.appendChild(item);
-        });
+        const confiaveis = [
+            { name: "@Tia-Hermione", nick: "Potter_carla", proofs: ["her1.jpg", "her2.jpg", "her3.jpg", "her4.jpg" ], proofCount: "500+" },
+            { name: "@mahi.sttore", nick: "yykaulinda" },
+            { name: "@asumah_", nick: "O_ASUMA" },       
+            { name: "@juliostoreadoptme", nick: "Clunk2zt", proofs: ["ju1.jpg", "ju2.jpg", "ju3.jpg" ], proofCount: "1500+" },
+            { name: "@lojinhadarakyoficial", nick: "RaqueSantos380_2", proofs: ["rakyy.jpg", "raky 1.jpg", "raky 2.jpg", "raky 3.jpg", "raky 4.jpg", "raky 4.jpg", "raky 5.jpg", "raky 6.jpg", "raky 7.jpg" ], proofCount: "8000+" },
+            { name: "@yuristoreoficial", nick: "yurienzovi", proofs: ["prova 1.jpg", "prova 2.jpg", "prova 3.jpg" ], proofCount: "600+" },
+            { name: "@vendasgabb", nick: "Dudagames4222", proofs: ["gab1.jpg", "gab2.jpg", "gab3.jpg", "gab4.jpg" ], proofCount: "2000+" },
+            { name: "@vendasgablives", nick: "Dudagames4222", proofs: ["gab1.jpg", "gab2.jpg", "gab3.jpg", "gab4.jpg" ], proofCount: "2000+" },
+            { name: "@starstoreofcial" },
+            { name: "@beartore01", nick: "Duda2p3roblox", proofs: ["be.jpg", "be2.jpg", "be3.jpg", "be4.jpg" ], proofCount: "900+" },
+            { name: "@tia_lany_adoptmee", nick: "Lanyy_ofc1" },
+            { name: "@joony888_", nick: "joony888" },
+            { name: "@crizz.adoptmee" },
+            { name: "@fael_adoptme", nick: "lobinho_fofo46", proofs: ["fae.jpg", "fae2.jpg", "fae3.jpg", "fae4.jpg" ], proofCount: "700+" },
+            { name: "@bella_adoptme27", nick: "belaa_blox88", proofs: ["bel3.jpg", "bel1.jpg", "bel2.jpg", "bel.jpg" ], proofCount: "400+" },
+            { name: "@loja_nuggetfrito", nick: "nugget_frito1541", proofs: ["nug.jpg", "nug1.jpg", "nug2.jpg", "nug3.jpg", "nug4.jpg", "nug5.jpg", "nug6.jpg", "nug7.jpg" ], proofCount: "2000+" },
+            { name: "@dk.shoppe2", nick: "dkshoppe", proofs: ["dk1.jpg", "dk2.jpg", "dk3.jpg", "dk4.jpg", "dk6.jpg" ], proofCount: "650+" },
+            { name: "@jorgedoadot3" },
+            { name: "@may_angel26", nick: "mayangel" },
+            { name: "@tiavan_adoptme", nick: "tiavanxxxgamer" },
+            { name: "@penguins.store", nick: "Larahfocoruja", proofs: ["pig1.jpg", "pig2.jpg", "pig3.jpg", "pig4.jpg", "pig5.jpg" ], proofCount: "1500+" },
+            { name: "@spaidizin", nick: "spaidizin" },
+            { name: "@lojinhadofonix2", nick: "fonix2" },
+            { name: "@Lekaterenzioficial", nick: "lekaterenzi", proofs: ["lek1.jpg","lek2.jpg","lek3.jpg","lek4.jpg","lek5.jpg" ], proofCount: "10000+/-"  },
+            { name: "@ruivaaguiar_", nick: "ruivaaguiar", proofs: ["rui.jpg", "rui2.jpg", "rui3.jpg", "rui4.jpg", "rui5.jpg" ], proofCount: "100+" },
+        ];
 
-        // Adicionar suspeitos
-        suspeitos.forEach(suspeito => {
-            const item = document.createElement('li');
-            const icon = document.createElement('img');
-            icon.src = 'alerta1.jpg';
-            icon.alt = 'Suspeito';
-            item.appendChild(icon);
-            
-            const suspeitoName = document.createElement('span');
-            suspeitoName.classList.add('suspeito');
-            suspeitoName.textContent = suspeito.name;
-            item.appendChild(suspeitoName);
-            
-            const saibaMaisBtn = document.createElement('button');
-            saibaMaisBtn.textContent = 'Saiba mais';
-            saibaMaisBtn.onclick = () => abrirModal(suspeito);
-            item.appendChild(saibaMaisBtn);
-            
-            lista.appendChild(item);
-        });
-        
-        botao.textContent = 'Ocultar Lista';
-        lista.classList.add('lista-expandida');
-    } else {
-        // Limpar a lista
-        lista.innerHTML = '';
-        botao.textContent = 'Ver Lista Completa';
-        lista.classList.remove('lista-expandida');
-    }
-}
+        let classification = '';
+        let listaCompletaVisivel = false;
 
-// Função para classificar como scammer, confiável ou suspeito
-function classify(type) {
-    classification = type;
-    alert(`Classificação definida como: ${
-        type === 'scammer' ? 'Scammer' : 
-        type === 'trustworthy' ? 'Confiável' : 
-        'Suspeito'
-    }`);
-}
+        // Função para mostrar/ocultar lista completa
+        function mostrarListaCompleta() {
+            const lista = document.getElementById('listaPessoas');
+            const botao = document.querySelector('.btn-lista-completa');
+            listaCompletaVisivel = !listaCompletaVisivel;
 
-// Função para buscar pessoas na lista
-function buscarPessoa() {
-    const input = document.getElementById('pesquisa');
-    const filtro = input.value.toLowerCase();
-    const lista = document.getElementById('listaPessoas');
-    
-    // Sempre limpa a lista ao pesquisar
-    lista.innerHTML = '';
+            if (listaCompletaVisivel) {
+                // Mostrar todos os itens
+                lista.innerHTML = '';
 
-    // Se o campo de pesquisa estiver vazio, não mostra nada
-    if (filtro.trim() === '') {
-        return;
-    }
+                // Adicionar scammers
+                scammers.forEach(scammer => {
+                    const item = document.createElement('li');
+                    const icon = document.createElement('img');
+                    icon.src = 'scam.jpg';
+                    icon.alt = 'Scammer';
+                    item.appendChild(icon);
 
-    // Adiciona scammers que correspondem à pesquisa
-    scammers.forEach(scammer => {
-        if (scammer.name.toLowerCase().includes(filtro)) {
-            const item = document.createElement('li');
-            const icon = document.createElement('img');
-            icon.src = 'scam.jpg';
-            icon.alt = 'Scammer';
-            item.appendChild(icon);
-            
-            const scammerName = document.createElement('span');
-            scammerName.classList.add('scammer');
-            scammerName.textContent = scammer.name;
-            item.appendChild(scammerName);
-            
-            const saibaMaisBtn = document.createElement('button');
-            saibaMaisBtn.textContent = 'Saiba mais';
-            saibaMaisBtn.onclick = () => abrirModal(scammer);
-            item.appendChild(saibaMaisBtn);
-            
-            lista.appendChild(item);
+                    const scammerName = document.createElement('span');
+                    scammerName.classList.add('scammer');
+                    scammerName.textContent = scammer.name;
+                    item.appendChild(scammerName);
+
+                    const saibaMaisBtn = document.createElement('button');
+                    saibaMaisBtn.textContent = 'Saiba mais';
+                    saibaMaisBtn.onclick = () => abrirModal(scammer);
+                    item.appendChild(saibaMaisBtn);
+
+                    lista.appendChild(item);
+                });
+
+                // Adicionar confiáveis
+                confiaveis.forEach(confiavel => {
+                    const item = document.createElement('li');
+                    const icon = document.createElement('img');
+                    icon.src = 'conf.jpg';
+                    icon.alt = 'Confiável';
+                    item.appendChild(icon);
+
+                    const confiavelName = document.createElement('span');
+                    confiavelName.classList.add('confiavel');
+                    confiavelName.textContent = confiavel.name;
+                    item.appendChild(confiavelName);
+
+                    const saibaMaisBtn = document.createElement('button');
+                    saibaMaisBtn.textContent = 'Saiba mais';
+                    saibaMaisBtn.onclick = () => abrirModal(confiavel);
+                    item.appendChild(saibaMaisBtn);
+
+                    lista.appendChild(item);
+                });
+
+                botao.textContent = 'Ocultar Lista';
+                lista.classList.add('lista-expandida');
+            } else {
+                // Limpar a lista
+                lista.innerHTML = '';
+                botao.textContent = 'Ver Lista Completa';
+                lista.classList.remove('lista-expandida');
+            }
         }
-    });
 
-    // Adiciona confiáveis que correspondem à pesquisa
-    confiaveis.forEach(confiavel => {
-        if (confiavel.name.toLowerCase().includes(filtro)) {
-            const item = document.createElement('li');
-            const icon = document.createElement('img');
-            icon.src = 'conf.jpg';
-            icon.alt = 'Confiável';
-            item.appendChild(icon);
-            
-            const confiavelName = document.createElement('span');
-            confiavelName.classList.add('confiavel');
-            confiavelName.textContent = confiavel.name;
-            item.appendChild(confiavelName);
-            
-            const saibaMaisBtn = document.createElement('button');
-            saibaMaisBtn.textContent = 'Saiba mais';
-            saibaMaisBtn.onclick = () => abrirModal(confiavel);
-            item.appendChild(saibaMaisBtn);
-            
-            lista.appendChild(item);
+        // Função para classificar como scammer ou confiável
+        function classify(type) {
+            classification = type;
+            alert(`Classificação definida como: ${type === 'scammer' ? 'Scammer' : 'Confiável'}`);
         }
-    });
 
-    // Adiciona suspeitos que correspondem à pesquisa
-    suspeitos.forEach(suspeito => {
-        if (suspeito.name.toLowerCase().includes(filtro)) {
-            const item = document.createElement('li');
-            const icon = document.createElement('img');
-            icon.src = 'alerta1.jpg';
-            icon.alt = 'Suspeito';
-            item.appendChild(icon);
-            
-            const suspeitoName = document.createElement('span');
-            suspeitoName.classList.add('suspeito');
-            suspeitoName.textContent = suspeito.name;
-            item.appendChild(suspeitoName);
-            
-            const saibaMaisBtn = document.createElement('button');
-            saibaMaisBtn.textContent = 'Saiba mais';
-            saibaMaisBtn.onclick = () => abrirModal(suspeito);
-            item.appendChild(saibaMaisBtn);
-            
-            lista.appendChild(item);
-        }
-    });
-}
+        // Função para buscar pessoas na lista
+        function buscarPessoa() {
+            const input = document.getElementById('pesquisa');
+            const filtro = input.value.toLowerCase();
+            const lista = document.getElementById('listaPessoas');
 
-// As outras funções (abrirModal, fecharModal, mostrarFormulario, uploadImageToCloudinary) permanecem iguais
+            // Sempre limpa a lista ao pesquisar
+            lista.innerHTML = '';
+
+            // Se o campo de pesquisa estiver vazio, não mostra nada
+            if (filtro.trim() === '') {
+                return;
+            }
+
+            // Adiciona scammers que correspondem à pesquisa
+            scammers.forEach(scammer => {
+                if (scammer.name.toLowerCase().includes(filtro)) {
+                    const item = document.createElement('li');
+                    const icon = document.createElement('img');
+                    icon.src = 'scam.jpg';
+                    icon.alt = 'Scammer';
+                    item.appendChild(icon);
+
+                    const scammerName = document.createElement('span');
+                    scammerName.classList.add('scammer');
+                    scammerName.textContent = scammer.name;
+                    item.appendChild(scammerName);
+
+                    const saibaMaisBtn = document.createElement('button');
+                    saibaMaisBtn.textContent = 'Saiba mais';
+                    saibaMaisBtn.onclick = () => abrirModal(scammer);
+                    item.appendChild(saibaMaisBtn);
+
+                    lista.appendChild(item);
+                }
+            });
 
             // Adiciona confiáveis que correspondem à pesquisa
             confiaveis.forEach(confiavel => {
@@ -782,17 +758,17 @@ function buscarPessoa() {
                     icon.src = 'conf.jpg';
                     icon.alt = 'Confiável';
                     item.appendChild(icon);
-                    
+
                     const confiavelName = document.createElement('span');
                     confiavelName.classList.add('confiavel');
                     confiavelName.textContent = confiavel.name;
                     item.appendChild(confiavelName);
-                    
+
                     const saibaMaisBtn = document.createElement('button');
                     saibaMaisBtn.textContent = 'Saiba mais';
                     saibaMaisBtn.onclick = () => abrirModal(confiavel);
                     item.appendChild(saibaMaisBtn);
-                    
+
                     lista.appendChild(item);
                 }
             });
@@ -861,11 +837,11 @@ function buscarPessoa() {
                         body: formData
                     }
                 );
-                
+
                 if (!response.ok) {
                     throw new Error('Falha no upload da imagem');
                 }
-                
+
                 const data = await response.json();
                 return data.secure_url;
             } catch (error) {
@@ -912,7 +888,7 @@ event.preventDefault();
                 const nome = document.getElementById('nome').value;
                 const email = document.getElementById('emailNome').value;
                 const fileInput = document.getElementById('petInfoNome');
-                
+
                 if (!classification) {
                     alert('Por favor, classifique como Scammer ou Confiável');
                     submitButton.disabled = false;
@@ -956,7 +932,7 @@ event.preventDefault();
 
             // Mostra modal de sucesso
             showSuccessModal();
-            
+
             // Limpa o formulário
             if (tipo === 'nome') {
                 document.getElementById('petForm').reset();
@@ -983,7 +959,7 @@ event.preventDefault();
         let countdown = 5;
         const countdownElement = document.getElementById('countdown');
         const countdownText = document.getElementById('countdownText');
-        
+
         countdownElement.textContent = countdown;
         countdownText.textContent = countdown;
 
