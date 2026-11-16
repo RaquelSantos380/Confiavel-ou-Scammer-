@@ -996,6 +996,11 @@
                         }
                         
                         console.log('Email enviado com sucesso:', response);
+
+                        // Pequeno intervalo entre os e-mails para reduzir risco de limite de envio
+                        if (i < fileInput.files.length - 1) {
+                            await new Promise(resolve => setTimeout(resolve, 1200));
+                        }
                     }
                 } else {
                     const nick = document.getElementById('nick').value.trim();
